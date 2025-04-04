@@ -20,6 +20,12 @@ pnpm deploy:hook
 pnpm deploy:hook --network baseSepolia
 ```
 
+### Sepolia with verify
+
+```
+pnpm deploy:hook --network sepolia --verify
+```
+
 ## Architecture
 
 ```mermaid
