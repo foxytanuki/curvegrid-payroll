@@ -14,17 +14,24 @@ The following command will deploy CCTPHookWrapper to Hardhat local network.
 pnpm deploy:hook
 ```
 
-#### BaseSepolia
+##### BaseSepolia
 
 ```
 pnpm deploy:hook --network baseSepolia
 ```
 
-### Sepolia with verify
+##### Sepolia with verify
 
 ```
 pnpm deploy:hook --network sepolia --verify
 ```
+
+#### MultichainPayroll.sol
+
+```
+pnpm deploy:payroll
+```
+
 
 ## Architecture
 
