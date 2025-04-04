@@ -26,6 +26,12 @@ importers:
       '@openzeppelin/contracts':
         specifier: 3.4.2
         version: 3.4.2
+      '@openzeppelin/contracts-upgradeable':
+        specifier: ^5.2.0
+        version: 5.2.0(@openzeppelin/contracts@3.4.2)
+      '@openzeppelin/hardhat-upgrades':
+        specifier: ^3.9.0
+        version: 3.9.0(@nomicfoundation/hardhat-ethers@3.0.8(ethers@6.13.5)(hardhat@2.22.19(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.2))(typescript@5.8.2)))(@nomicfoundation/hardhat-verify@2.0.13(hardhat@2.22.19(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.2))(typescript@5.8.2)))(ethers@6.13.5)(hardhat@2.22.19(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.2))(typescript@5.8.2))
       '@types/node':
         specifier: ^22.14.0
         version: 22.14.0
@@ -546,6 +552,11 @@ packages:
   '@nomicfoundation/solidity-analyzer@0.1.2':
     resolution: {integrity: sha512-q4n32/FNKIhQ3zQGGw5CvPF6GTvDCpYwIf7bEY/dZTZbgfDsHyjJwURxUJf3VQuuJj+fDIFl4+KkBVbw4Ef6jA==}
     engines: {node: '>= 12'}
+
+  '@openzeppelin/contracts-upgradeable@5.2.0':
+    resolution: {integrity: sha512-mZIu9oa4tQTlGiOJHk6D3LdJlqFqF6oNOSn6S6UVJtzfs9UsY9/dhMEbAVTwElxUtJnjpf6yA062+oBp+eOyPg==}
+    peerDependencies:
+      '@openzeppelin/contracts': 5.2.0
 
   '@openzeppelin/contracts@3.4.2':
     resolution: {integrity: sha512-z0zMCjyhhp4y7XKAcDAi3Vgms4T2PstwBdahiO0+9NaGICQKjynK3wduSRplTgk4LXmoO1yfDGO5RbjKYxtuxA==}
@@ -3512,6 +3523,10 @@ snapshots:
       '@nomicfoundation/solidity-analyzer-linux-x64-gnu': 0.1.2
       '@nomicfoundation/solidity-analyzer-linux-x64-musl': 0.1.2
       '@nomicfoundation/solidity-analyzer-win32-x64-msvc': 0.1.2
+
+  '@openzeppelin/contracts-upgradeable@5.2.0(@openzeppelin/contracts@3.4.2)':
+    dependencies:
+      '@openzeppelin/contracts': 3.4.2
 
   '@openzeppelin/contracts@3.4.2': {}
 

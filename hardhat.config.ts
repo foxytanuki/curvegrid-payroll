@@ -1,6 +1,7 @@
 import type { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-ethers";
 import "@nomicfoundation/hardhat-ignition-ethers";
+import "@openzeppelin/hardhat-upgrades";
 import "hardhat-multibaas-plugin";
 import dotenv from "dotenv";
 
