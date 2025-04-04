@@ -32,6 +32,52 @@ pnpm deploy:hook --network sepolia --verify
 pnpm deploy:payroll
 ```
 
+### BatchPayEmployees from sepolia
+
+```
+➜  curvegrid-payroll git:(main) ✗ pnpm hardhat run scripts/payroll.ts --network sepolia
+Running script on network: sepolia (chainId: 11155111)
+Using deployer account: 0x39338FD37f41BabC04e119332198346C0EB31022
+
+Getting deployed contract address for ID: MultichainPayrollModule#MultichainPayroll on chain 11155111...
+  Reading deployed addresses from: /Users/foxy/Development/personal/hackathon/curvegrid-payroll/ignition/deployments/chain-11155111/deployed_addresses.json
+  Found contract address: 0xa65552404dFc42380Bd1327C9795126F9a8626c1
+Successfully retrieved MultichainPayroll contract instance.
+
+Step 1: Setting route info for employee 0x45D17a2C9092ec9F86FB27A8416c2777858fB591...
+  Transaction sent: 0x5399eb2c1b6046e33459c32fe0a0f70fdd574e75e5f22bffe2665edc5948b2a5
+  Route info set successfully. Gas used: 50911
+
+Step 2: Sending 0.2 USDC to Payroll contract (0xa65552404dFc42380Bd1327C9795126F9a8626c1)...
+  Deployer (0x39338FD37f41BabC04e119332198346C0EB31022) USDC balance: 33.9
+  USDC transfer transaction sent: 0xfc85a68caa3aeb505521e13721ebfbd439e96efde67ac8e1a948c4b0e5cd563e
+  USDC transferred successfully. Gas used: 62159
+  Payroll contract USDC balance: 0.2
+
+Step 3: Paying employee 0x45D17a2C9092ec9F86FB27A8416c2777858fB591 (0.1 USDC) via batchPayEmployees...
+ Payroll contract balance before payment: 0.2 USDC
+  batchPayEmployees transaction sent: 0xa34ad7a4b3fc05db224157a42d1d677ea169f0f7178c035ea1e5a9640cdfea98
+  Payment sent successfully via CCTP. Gas used: 135792
+  Payroll contract USDC balance after payment tx: 0.1
+
+Script finished successfully.
+```
+
+### Get an attestation
+
+```
+➜  curvegrid-payroll git:(main) pnpm tsx scripts/attestation.ts 0xa34ad7a4b3fc05db224157a42d1d677ea169f0f7178c035ea1e5a9640cdfea98
+Retrieving attestation for transaction: 0xa34ad7a4b3fc05db224157a42d1d677ea169f0f7178c035ea1e5a9640cdfea98
+Attestation retrieved successfully!
+
+{
+  attestation: '0xa28a1cbab7a4cc56235aea6066c21f0e3c2a66472a7ed00d7131afbbd671722f1ace7ceb158d013756d6b66b3b0cb4fc05125b61fe88b5a8cc29b299b26f806e1c13def4c37828096dac949b0a0b7b2775172662f6426095aa648aa86718975fd54e3fb2531d6ed1f44ea3691aebe3fe34a9830d3abccef34f9aca067eabd3c3f31b',
+  message: '0x000000010000000000000006a482c6b74d999a4a814bb9a82bfbc98505808adce9db435556c451b5107ed45c0000000000000000000000008fe6b999dc680ccfdd5bf7eb0974218be2542daa0000000000000000000000008fe6b999dc680ccfdd5bf7eb0974218be2542daa0000000000000000000000000000000000000000000000000000000000000000000003e8000007d0000000010000000000000000000000001c7d4b196cb0c7b01d743fbc6116a902379c723800000000000000000000000045d17a2c9092ec9f86fb27a8416c2777858fb59100000000000000000000000000000000000000000000000000000000000186a0000000000000000000000000a65552404dfc42380bd1327c9795126f9a8626c1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  eventNonce: '0xa482c6b74d999a4a814bb9a82bfbc98505808adce9db435556c451b5107ed45c',
+  cctpVersion: 2,
+  status: 'complete'
+}
+```
 
 ## Architecture
 
