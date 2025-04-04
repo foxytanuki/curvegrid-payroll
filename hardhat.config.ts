@@ -11,6 +11,7 @@ const MB_API_KEY = process.env.MB_API_KEY;
 const MB_HOST = process.env.MB_HOST;
 const SEPOLIA_URL = process.env.SEPOLIA_URL;
 const BASE_SEPOLIA_URL = process.env.BASE_SEPOLIA_URL;
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
 if (!PRIVATE_KEY || !MB_API_KEY || !MB_HOST) {
   throw new Error("PRIVATE_KEY or MB_API_KEY or MB_HOST is not set");
@@ -18,6 +19,10 @@ if (!PRIVATE_KEY || !MB_API_KEY || !MB_HOST) {
 
 if (!BASE_SEPOLIA_URL || !SEPOLIA_URL) {
   throw new Error("BASE_SEPOLIA_URL or SEPOLIA_URL is not set");
+}
+
+if (!ETHERSCAN_API_KEY) {
+  throw new Error("ETHERSCAN_API_KEY is not set");
 }
 
 const config: HardhatUserConfig = {
@@ -44,6 +49,9 @@ const config: HardhatUserConfig = {
     host: MB_HOST,
     allowUpdateAddress: ["baseSepolia"],
     allowUpdateContract: ["baseSepolia"],
+  },
+  etherscan: {
+    apiKey: ETHERSCAN_API_KEY,
   },
 };
 
