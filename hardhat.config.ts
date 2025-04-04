@@ -12,6 +12,7 @@ const MB_HOST = process.env.MB_HOST;
 const SEPOLIA_URL = process.env.SEPOLIA_URL;
 const BASE_SEPOLIA_URL = process.env.BASE_SEPOLIA_URL;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
+const BASESCAN_API_KEY = process.env.BASESCAN_API_KEY;
 
 if (!PRIVATE_KEY || !MB_API_KEY || !MB_HOST) {
   throw new Error("PRIVATE_KEY or MB_API_KEY or MB_HOST is not set");
@@ -21,7 +22,7 @@ if (!BASE_SEPOLIA_URL || !SEPOLIA_URL) {
   throw new Error("BASE_SEPOLIA_URL or SEPOLIA_URL is not set");
 }
 
-if (!ETHERSCAN_API_KEY) {
+if (!ETHERSCAN_API_KEY || !BASESCAN_API_KEY) {
   throw new Error("ETHERSCAN_API_KEY is not set");
 }
 
@@ -51,7 +52,28 @@ const config: HardhatUserConfig = {
     allowUpdateContract: ["baseSepolia"],
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    apiKey: {
+      sepolia: ETHERSCAN_API_KEY,
+      baseSepolia: BASESCAN_API_KEY,
+    },
+    customChains: [
+      {
+        network: "sepolia",
+        chainId: 11155111,
+        urls: {
+          apiURL: "https://api-sepolia.etherscan.io/api",
+          browserURL: "https://sepolia.etherscan.io/",
+        },
+      },
+      {
+        network: "baseSepolia",
+        chainId: 84532,
+        urls: {
+          apiURL: "https://api-sepolia.basescan.org/api",
+          browserURL: "https://sepolia.basescan.org",
+        },
+      },
+    ],
   },
 };
 
