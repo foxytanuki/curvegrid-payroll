@@ -1,5 +1,7 @@
 # Curvegrid Payroll
 
+This application proceeds with Sepolia as the source chain and Base Sepolia as the destination chain.
+
 ## Commands
 
 ### Deploy Contracts via Hardhat Ignition
@@ -12,8 +14,8 @@ The following command will deploy CCTPHookWrapper to Hardhat local network.
 pnpm deploy:hook
 ```
 
-#### Sepolia
+#### BaseSepolia
 
 ```
-pnpm deploy:hook --network sepolia
+pnpm deploy:hook --network baseSepolia
 ```
