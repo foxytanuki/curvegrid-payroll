@@ -33,7 +33,7 @@ async function main() {
   const paymentAmount = ethers.parseUnits("0.1", usdcDecimals); // 0.1 USDC
   const transferAmount = ethers.parseUnits("0.2", usdcDecimals); // Amount to fund the contract
 
-  // --- Get Deployed Contract (Reading Artifact) ---
+  // --- Get Deployed Contract (Reading deployed_addresses.json) ---
   console.log(
     `\nGetting deployed contract address for ID: ${sepoliaPayrollDeploymentId} on chain ${chainId}...`
   );
@@ -41,26 +41,37 @@ async function main() {
   let payrollContract: MultichainPayroll;
   let payrollContractAddress: string;
   try {
-    // Construct the path to the deployment artifact file
-    const artifactPath = path.join(
+    // Construct the path to the deployed_addresses.json file
+    const deployedAddressesPath = path.join(
       __dirname, // Assumes script is run from workspace root via 'npx hardhat run'
       "..", // Go up one level from 'scripts'
       "ignition",
       "deployments",
       `chain-${chainId}`,
-      `${sepoliaPayrollDeploymentId}.json`
+      "deployed_addresses.json" // Target file
     );
 
-    console.log(`  Reading artifact from: ${artifactPath}`);
+    console.log(`  Reading deployed addresses from: ${deployedAddressesPath}`);
 
     // Read and parse the JSON file
-    const artifactContent = fs.readFileSync(artifactPath, "utf-8");
-    const deploymentArtifact = JSON.parse(artifactContent);
-    payrollContractAddress = deploymentArtifact.address; // Extract the address
+    const deployedAddressesContent = fs.readFileSync(
+      deployedAddressesPath,
+      "utf-8"
+    );
+    const deployedAddresses = JSON.parse(deployedAddressesContent);
+
+    // Extract the address using the deployment ID as the key
+    payrollContractAddress = deployedAddresses[sepoliaPayrollDeploymentId];
+
+    if (!payrollContractAddress) {
+      throw new Error(
+        `Address for deployment ID '${sepoliaPayrollDeploymentId}' not found in ${deployedAddressesPath}`
+      );
+    }
 
     if (!ethers.isAddress(payrollContractAddress)) {
       throw new Error(
-        `Invalid address found in artifact: ${payrollContractAddress}`
+        `Invalid address found in deployed_addresses.json for ID '${sepoliaPayrollDeploymentId}': ${payrollContractAddress}`
       );
     }
 
@@ -75,24 +86,22 @@ async function main() {
 
     console.log("Successfully retrieved MultichainPayroll contract instance.");
   } catch (error: unknown) {
+    let errorMessage = `Failed to get contract address for ID '${sepoliaPayrollDeploymentId}'.`;
     if (error instanceof Error) {
-      console.error(
-        `Failed to get contract address from artifact for ID '${sepoliaPayrollDeploymentId}'. Error: ${error.message}`
-      );
+      errorMessage += ` Error: ${error.message}`;
     } else {
-      console.error(
-        `Failed to get contract address from artifact for ID '${sepoliaPayrollDeploymentId}'. Error: ${error}`
-      );
+      errorMessage += ` Unexpected error: ${error}`;
     }
+    console.error(errorMessage);
     console.error("Please ensure:");
     console.error(
       `1. Ignition deployment for chain ${chainId} has been run successfully.`
     );
     console.error(
-      `2. The deployment ID '${sepoliaPayrollDeploymentId}' is correct.`
+      `2. The deployment ID '${sepoliaPayrollDeploymentId}' is correct and exists as a key in 'ignition/deployments/chain-${chainId}/deployed_addresses.json'.`
     );
     console.error(
-      `3. The artifact file exists at 'ignition/deployments/chain-${chainId}/${sepoliaPayrollDeploymentId}.json'.`
+      `3. The file 'ignition/deployments/chain-${chainId}/deployed_addresses.json' exists and contains a valid address for the key.`
     );
     console.error("4. Your hardhat config has the correct network settings.");
     console.error("Aborting script.");
@@ -115,8 +124,14 @@ async function main() {
     console.log(
       `  Route info set successfully. Gas used: ${receiptSetRoute?.gasUsed.toString()}`
     );
-  } catch (error) {
-    console.error(`  Failed to set route info: ${error}`);
+  } catch (error: unknown) {
+    let message = "Failed to set route info.";
+    if (error instanceof Error) {
+      message += ` Error: ${error.message}`;
+    } else {
+      message += ` Unexpected error: ${error}`;
+    }
+    console.error(`  ${message}`);
     return; // Stop if this step fails
   }
 
@@ -174,8 +189,14 @@ async function main() {
         usdcDecimals
       )}`
     );
-  } catch (error) {
-    console.error(`  Failed to send USDC: ${error}`);
+  } catch (error: unknown) {
+    let message = "Failed to send USDC.";
+    if (error instanceof Error) {
+      message += ` Error: ${error.message}`;
+    } else {
+      message += ` Unexpected error: ${error}`;
+    }
+    console.error(`  ${message}`);
     return; // Stop if transfer fails
   }
 
@@ -230,8 +251,14 @@ async function main() {
         usdcDecimals
       )}`
     );
-  } catch (error) {
-    console.error(`  Failed to execute batchPayEmployees: ${error}`);
+  } catch (error: unknown) {
+    let message = "Failed to execute batchPayEmployees.";
+    if (error instanceof Error) {
+      message += ` Error: ${error.message}`;
+    } else {
+      message += ` Unexpected error: ${error}`;
+    }
+    console.error(`  ${message}`);
     return; // Stop if payment fails
   }
 
