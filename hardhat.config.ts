@@ -16,8 +16,8 @@ if (!PRIVATE_KEY || !MB_API_KEY || !MB_HOST) {
   throw new Error("PRIVATE_KEY or MB_API_KEY or MB_HOST is not set");
 }
 
-if (!!BASE_SEPOLIA_URL && !!SEPOLIA_URL) {
-  throw new Error("BASE_SEPOLIA_URL and SEPOLIA_URL cannot both be set");
+if (!BASE_SEPOLIA_URL || !SEPOLIA_URL) {
+  throw new Error("BASE_SEPOLIA_URL or SEPOLIA_URL is not set");
 }
 
 const config: HardhatUserConfig = {
