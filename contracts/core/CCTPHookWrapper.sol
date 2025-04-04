@@ -21,7 +21,7 @@ import {IReceiverV2} from "../lib/interfaces/IReceiverV2.sol";
 import {TypedMemView} from "../lib/memview/TypedMemView.sol";
 import {MessageV2} from "../lib/messages/MessageV2.sol";
 import {BurnMessageV2} from "../lib/messages/BurnMessageV2.sol";
-import {Ownable2Step} from "../lib/roles/Ownable2Step.sol";
+import {Ownable} from "../lib/roles/Ownable.sol";
 
 /**
  * @title CCTPHookWrapper
@@ -29,7 +29,7 @@ import {Ownable2Step} from "../lib/roles/Ownable2Step.sol";
  * optionally executes the hook contained in the Burn Message.
  * @dev Intended to only work with CCTP v2 message formats and interfaces.
  */
-contract CCTPHookWrapper is Ownable2Step {
+contract CCTPHookWrapper is Ownable {
     // ============ Constants ============
     // Address of the local message transmitter
     IReceiverV2 public immutable messageTransmitter;
@@ -51,7 +51,7 @@ contract CCTPHookWrapper is Ownable2Step {
     /**
      * @param _messageTransmitter The address of the local message transmitter
      */
-    constructor(address _messageTransmitter) Ownable2Step() {
+    constructor(address _messageTransmitter) Ownable() {
         require(
             _messageTransmitter != address(0),
             "Message transmitter is the zero address"
