@@ -79,6 +79,29 @@ Attestation retrieved successfully!
 }
 ```
 
+### Receive Message on the destination chain
+
+```
+pnpm hardhat run scripts/2-receive-message.ts --network baseSepolia
+Reading attestation data from: /Users/foxy/Development/personal/hackathon/curvegrid-payroll/attestation_data.json
+Successfully read attestation data:
+  Message: 0x000000010000000000000006a482c6b74d999a4a...
+  Attestation: 0xa28a1cbab7a4cc56235aea6066c21f0e3c2a6647...
+
+Running script on network: baseSepolia (chainId: 84532)
+Using signer account: 0x39338FD37f41BabC04e119332198346C0EB31022
+
+Getting deployed CCTPHookWrapper address for ID: CCTPHookWrapperModule#CCTPHookWrapper on chain 84532...
+  Reading deployed addresses from: /Users/foxy/Development/personal/hackathon/curvegrid-payroll/ignition/deployments/chain-84532/deployed_addresses.json
+  Found contract address: 0x36f6eb97FE0Ac332B651c46D08B201fE471C16e2
+Successfully retrieved CCTPHookWrapper contract instance.
+
+Calling receiveMessage on CCTPHookWrapper (0x36f6eb97FE0Ac332B651c46D08B201fE471C16e2)...
+  Transaction sent: 0x3bb0ceab1685ba8e4cbcfccd28d4b4d53d6eb0f838e0560d881c8fa2c914da0a
+  Message received successfully. Gas used: 184131
+  View transaction on explorer: https://baseSepolia.etherscan.io/tx/0x3bb0ceab1685ba8e4cbcfccd28d4b4d53d6eb0f838e0560d881c8fa2c914da0a
+```
+
 ## Architecture
 
 ```mermaid
