@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const ETHEREUM_SEPOLIA_DOMAIN = 0; // source doman
+const SOURCE_DOMAIN = 0; // Ethereum Sepolia
 
 async function retrieveAttestation(transactionHash: string) {
-  const url = `https://iris-api-sandbox.circle.com/v2/messages/${ETHEREUM_SEPOLIA_DOMAIN}?transactionHash=${transactionHash}`;
+  const url = `https://iris-api-sandbox.circle.com/v2/messages/${SOURCE_DOMAIN}?transactionHash=${transactionHash}`;
   while (true) {
     try {
       const response = await axios.get(url);
