@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.4.7
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
@@ -25,11 +21,14 @@ importers:
         specifier: 3.4.2
         version: 3.4.2
       '@types/node':
-        specifier: ^22.13.11
+        specifier: ^22.14.0
         version: 22.14.0
       axios:
         specifier: ^1.8.4
         version: 1.8.4(debug@4.4.0)
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
       ethers:
         specifier: ^6.13.5
         version: 6.13.5
