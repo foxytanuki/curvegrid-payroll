@@ -5,7 +5,24 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["ETHGlobalTaipei"],
-  "author": "foxytanuki",
+  "keywords": [
+    "ETHGlobalTaipei"
+  ],
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
+    "@openzeppelin/contracts": "3.4.2",
+    "@types/node": "^22.13.11",
+    "axios": "^1.8.4",
+    "ethers": "^6.13.5",
+    "hardhat": "^2.22.19",
+    "hardhat-multibaas-plugin": "^1.0.0",
+    "typescript": "^5.8.2",
+    "viem": "^2.25.0",
+    "dotenv": "^16.4.7"
+  },
+  "dependencies": {
+  },
   "packageManager": "pnpm@10.7.0"
 }
