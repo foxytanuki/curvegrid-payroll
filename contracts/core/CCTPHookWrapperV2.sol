@@ -30,7 +30,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  * optionally executes the hook contained in the Burn Message.
  * @dev Intended to only work with CCTP v2 message formats and interfaces.
  */
-contract CCTPHookWrapper is Ownable {
+contract CCTPHookWrapperV2 is Ownable {
     // ============ Constants ============
     string private constant ERROR_INVALID_MESSAGE_TRANSMITTER = "CCTPHookWrapperV2: Message transmitter is the zero address";
     string private constant ERROR_INVALID_MESSAGE_VERSION = "CCTPHookWrapperV2: Invalid message version";
@@ -145,7 +145,7 @@ contract CCTPHookWrapper is Ownable {
                     .clone();
 
                 // Get the token address and amount from the burn message
-                address burnToken = BurnMessageV2._getBurnToken(_msgBody);
+                address burnToken = address(uint160(uint256(BurnMessageV2._getBurnToken(_msgBody))));
                 uint256 amount = BurnMessageV2._getAmount(_msgBody);
 
                 // Transfer the received token to the hook target *before* executing the hook
