@@ -1,4 +1,5 @@
 {
   "CCTPHookWrapperModule#CCTPHookWrapper": "0x06dB9107D889B380FDBc255021Af5fCEF8667AC4",
-  "CCTPHookWrapperV2Module#CCTPHookWrapperV2": "0xC4Fb1cE29389Fb698b3B39eBC611B3a40230a3E8"
+  "CCTPHookWrapperV2Module#CCTPHookWrapperV2": "0xC4Fb1cE29389Fb698b3B39eBC611B3a40230a3E8",
+  "MultichainPayrollWithHookDestinationModule#MultichainPayrollWithHook": "0xa601F01C1ce0F741e2B86ACb72aa090Ee8BDf810"
 }
