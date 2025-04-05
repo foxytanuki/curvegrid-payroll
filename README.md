@@ -32,6 +32,14 @@ pnpm deploy:hook --network sepolia --verify
 pnpm deploy:payroll
 ```
 
+### WithHooks
+
+1. `pnpm deploy:hook-v2 --verify`
+2. `pnpm deploy:payroll-hook-destination --verify`
+3. fill the values of MultichainPayrollWithHookSourceModule in `/ignition/parameters.json` 
+4. `pnpm deploy:payroll-hook-source --verify`
+
+
 ### BatchPayEmployees from sepolia
 
 ```
