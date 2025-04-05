@@ -197,7 +197,7 @@ contract MultichainPayrollWithHook is Ownable {
 
         // // 2. Construct hookData by tightly packing the target contract address (targetMultichainPayroll) and its calldata
         // // The hookWrapper will use this data to make the final call
-        // bytes memory hookData = abi.encodePacked(bytes20(targetMultichainPayroll), targetCalldata);
+        bytes memory hookData = abi.encodePacked(bytes20(targetMultichainPayroll), targetCalldata);
 
         // 3. Call CCTP's depositForBurnWithHook function with corrected parameters
         // Use values consistent with the working TypeScript example and best practices
@@ -205,15 +205,15 @@ contract MultichainPayrollWithHook is Ownable {
         uint32 cctpMinFinalityThreshold = 1000; // Set min finality threshold (consistent with TS example)
         bytes32 destinationCaller = _addressToBytes32(hookWrapper); // Restrict caller to the hookWrapper
 
-        tokenMessenger.depositForBurn(
+        tokenMessenger.depositForBurnWithHook(
            amount,                     // amount to burn
            domain,                     // destination CCTP domain
            _addressToBytes32(to),      // mintRecipient on destination (hookWrapper)
            USDC,                       // address of token being burned
            destinationCaller,          // authorized caller on the destination domain (hookWrapper)
            cctpMaxFee,                 // maximum fee to pay on the destination domain
-           cctpMinFinalityThreshold   // minimum finality threshold
-          //  hookData                    // custom data passed to the hook contract
+           cctpMinFinalityThreshold,   // minimum finality threshold
+           hookData                    // custom data passed to the hook contract
         );
     }
 
