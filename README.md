@@ -23,6 +23,8 @@
 ##### Natsuki Yamaguchi
 X(Twitter): [0x_natto](0x_natto)
 
+Komlock Lab CTO & Technical Lead at CryptoGames, specializing in Blockchain Development.
+
 ##### Takuma Abe
 X(Twitter): [takupesoo](https://x.com/takupesoo)
 
