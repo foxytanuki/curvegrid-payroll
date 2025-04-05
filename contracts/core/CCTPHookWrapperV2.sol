@@ -32,6 +32,16 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  */
 contract CCTPHookWrapper is Ownable {
     // ============ Constants ============
+    string private constant ERROR_INVALID_MESSAGE_TRANSMITTER = "CCTPHookWrapperV2: Message transmitter is the zero address";
+    string private constant ERROR_INVALID_MESSAGE_VERSION = "CCTPHookWrapperV2: Invalid message version";
+    string private constant ERROR_INVALID_MESSAGE_BODY_VERSION = "CCTPHookWrapperV2: Invalid message body version";
+    string private constant ERROR_RECEIVE_MESSAGE_FAILED = "CCTPHookWrapperV2: Receive message failed";
+    string private constant ERROR_TOKEN_TRANSFER_FAILED = "CCTPHookWrapperV2: Token transfer failed"; // Generic transfer error
+    string private constant ERROR_INVALID_RECIPIENT = "CCTPHookWrapperV2: Invalid recipient address";
+    string private constant ERROR_INVALID_TOKEN = "CCTPHookWrapperV2: Invalid token address";
+    string private constant ERROR_ZERO_AMOUNT = "CCTPHookWrapperV2: Amount must be greater than 0";
+    string private constant ERROR_INSUFFICIENT_BALANCE = "CCTPHookWrapperV2: Insufficient balance";
+
     // Address of the local message transmitter
     IReceiverV2 public immutable messageTransmitter;
 
@@ -55,7 +65,7 @@ contract CCTPHookWrapper is Ownable {
     constructor(address _messageTransmitter) Ownable() {
         require(
             _messageTransmitter != address(0),
-            "Message transmitter is the zero address"
+            ERROR_INVALID_MESSAGE_TRANSMITTER
         );
 
         messageTransmitter = IReceiverV2(_messageTransmitter);
@@ -109,7 +119,7 @@ contract CCTPHookWrapper is Ownable {
         MessageV2._validateMessageFormat(_msg);
         require(
             MessageV2._getVersion(_msg) == supportedMessageVersion,
-            "Invalid message version"
+            ERROR_INVALID_MESSAGE_VERSION
         );
 
         // Validate burn message
@@ -117,12 +127,12 @@ contract CCTPHookWrapper is Ownable {
         BurnMessageV2._validateBurnMessageFormat(_msgBody);
         require(
             BurnMessageV2._getVersion(_msgBody) == supportedMessageBodyVersion,
-            "Invalid message body version"
+            ERROR_INVALID_MESSAGE_BODY_VERSION
         );
 
         // Relay message
         relaySuccess = messageTransmitter.receiveMessage(message, attestation);
-        require(relaySuccess, "Receive message failed");
+        require(relaySuccess, ERROR_RECEIVE_MESSAGE_FAILED);
 
         // Handle hook if present
         bytes29 _hookData = BurnMessageV2._getHookData(_msgBody);
@@ -140,7 +150,7 @@ contract CCTPHookWrapper is Ownable {
 
                 // Transfer the received token to the hook target *before* executing the hook
                 // Ensure this contract has sufficient balance (which it should after receiveMessage)
-                require(IERC20(burnToken).transfer(_target, amount), "Token transfer to hook target failed");
+                require(IERC20(burnToken).transfer(_target, amount), ERROR_TOKEN_TRANSFER_FAILED);
 
                 // Now execute the hook. The target contract should have the tokens.
                 (hookSuccess, hookReturnData) = _executeHook(
@@ -162,14 +172,14 @@ contract CCTPHookWrapper is Ownable {
      * @param amount The amount of tokens to withdraw.
      */
     function withdrawTokens(address tokenContract, address to, uint256 amount) external onlyOwner {
-        require(to != address(0), "Invalid recipient address");
-        require(tokenContract != address(0), "Invalid token address");
-        require(amount > 0, "Amount must be greater than 0");
+        require(to != address(0), ERROR_INVALID_RECIPIENT);
+        require(tokenContract != address(0), ERROR_INVALID_TOKEN);
+        require(amount > 0, ERROR_ZERO_AMOUNT);
 
         uint256 balance = IERC20(tokenContract).balanceOf(address(this));
-        require(balance >= amount, "Insufficient balance");
+        require(balance >= amount, ERROR_INSUFFICIENT_BALANCE);
 
-        require(IERC20(tokenContract).transfer(to, amount), "Token transfer failed");
+        require(IERC20(tokenContract).transfer(to, amount), ERROR_TOKEN_TRANSFER_FAILED);
     }
 
     // ============ Internal Functions  ============
