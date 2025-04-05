@@ -3,7 +3,7 @@
 ### Summaries for "Best Overall Use of MultiBaas" Prize.
 
 #### 1. A one-sentence summary of your project
-Curvegrid Payroll is a cross-chain payroll application facilitating USDC payments, leveraging Circle's Cross-Chain Transfer Protocol (CCTP) V2.
+**Curvegrid Payroll** is a **cross-chain payroll application** facilitating USDC payments, leveraging **Circle's Cross-Chain Transfer Protocol (CCTP) V2**, powered by **Curvegrid**.
 
 #### 2. How you used MultiBaas in your project
 
