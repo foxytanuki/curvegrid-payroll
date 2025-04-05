@@ -3,9 +3,9 @@ import { ethers, ignition } from "hardhat";
 import * as fs from "node:fs";
 import * as path from "node:path";
 // Make sure you have run 'npx hardhat compile' to generate typechain types and artifacts
-import type { MultichainPayroll, IERC20 } from "../typechain-types";
-import MultichainPayrollArtifact from "../artifacts/contracts/core/MultichainPayroll.sol/MultichainPayroll.json";
-import IERC20Artifact from "../artifacts/@openzeppelin/contracts/token/ERC20/IERC20.sol/IERC20.json";
+import type { MultichainPayroll, IERC20 } from "../../typechain-types";
+import MultichainPayrollArtifact from "../../artifacts/contracts/core/MultichainPayroll.sol/MultichainPayroll.json";
+import IERC20Artifact from "../../artifacts/@openzeppelin/contracts/token/ERC20/IERC20.sol/IERC20.json";
 
 async function main() {
   const [deployer] = await ethers.getSigners();

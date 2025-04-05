@@ -3,8 +3,8 @@ import { ethers } from "hardhat";
 import * as fs from "node:fs";
 import * as path from "node:path";
 // Make sure you have run 'npx hardhat compile' to generate typechain types and artifacts
-import type { CCTPHookWrapper } from "../typechain-types"; // Adjust if typechain path is different
-import CCTPHookWrapperArtifact from "../artifacts/contracts/core/CCTPHookWrapper.sol/CCTPHookWrapper.json"; // Adjust artifact path if needed
+import type { CCTPHookWrapper } from "../../typechain-types"; // Adjust if typechain path is different
+import CCTPHookWrapperArtifact from "../../artifacts/contracts/core/CCTPHookWrapper.sol/CCTPHookWrapper.json"; // Adjust artifact path if needed
 
 const ATTESTATION_DATA_FILE = path.join(
   __dirname,
