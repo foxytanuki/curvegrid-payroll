@@ -32,8 +32,24 @@ Core Developer at Mycel. Full-stack blockchain developer passionate about intent
 
 #### 4. Clear setup and testing instructions
 
+##### Install dependencies
+
 ```
 pnpm i
+```
+
+##### Deploy contracts
+
+###### CCTPHookWrapper
+
+```
+pnpm deploy:hook --reset
+```
+
+###### MultichainPayrollMultisig
+
+```
+pnpm deploy:payroll-multisig --reset
 ```
 
 #### 5. Your experience with MultiBaas (feedback, challenges, wins)
