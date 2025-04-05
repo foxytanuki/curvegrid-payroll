@@ -143,6 +143,8 @@ contract MultichainPayrollWithHook is Ownable {
             RouteInfo memory route = routes[emp.employee];
             require(isRouteConfigured(emp.employee), ERROR_ROUTE_NOT_CONFIGURED);
             
+            // Send USDC to hookWrapper on destination chain at first,
+            // then the hookWrapper will call handleReceiveMessage on the targetMultichainPayroll
             _sendCCTP(hookWrapper, emp.amount, route.destinationCCTPDomain, emp.employee);
             
             emit PaymentSent(emp.employee, emp.amount, route.destinationCCTPDomain);
