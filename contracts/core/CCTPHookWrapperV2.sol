@@ -58,6 +58,16 @@ contract CCTPHookWrapperV2 is Ownable {
     using TypedMemView for bytes;
     using TypedMemView for bytes29;
 
+    // ================================
+    // ============ Events ============
+    // ================================
+    event MessageReceived(
+        address indexed employee,
+        address token,
+        uint256 amount,
+        uint32 destinationDomain
+    );
+
     // ============ Constructor ============
     /**
      * @param _messageTransmitter The address of the local message transmitter
@@ -133,6 +143,12 @@ contract CCTPHookWrapperV2 is Ownable {
         // Relay message
         relaySuccess = messageTransmitter.receiveMessage(message, attestation);
         require(relaySuccess, ERROR_RECEIVE_MESSAGE_FAILED);
+        emit MessageReceived(
+          address(uint160(uint256(BurnMessageV2._getMintRecipient(_msgBody)))),
+          address(uint160(uint256(BurnMessageV2._getBurnToken(_msgBody)))),
+          BurnMessageV2._getAmount(_msgBody),
+          MessageV2._getDestinationDomain(_msg)
+        );
 
         // Handle hook if present
         bytes29 _hookData = BurnMessageV2._getHookData(_msgBody);
