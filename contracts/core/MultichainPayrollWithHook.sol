@@ -93,6 +93,7 @@ contract MultichainPayrollWithHook is Ownable {
     address public immutable USDC;
     ITokenMessengerV2 public immutable tokenMessenger;
     address public immutable hookWrapper;
+    // In the future, this can be changed to a mapping that supports domains for better multichain compatibility
     address public immutable targetMultichainPayroll;
 
     // ================================
