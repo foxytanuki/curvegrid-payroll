@@ -185,8 +185,8 @@ contract MultichainPayrollWithHook is Ownable {
     function _sendCCTP(address to, uint256 amount, uint32 domain) internal {
         IERC20(USDC).approve(address(tokenMessenger), amount);
 
-        // 1. Prepare calldata for handleReceiveMessage(address recipient, uint256 amount)
-        // This function resides on the targetMultichainPayroll contract, which will be called by the hookWrapper
+        // // 1. Prepare calldata for handleReceiveMessage(address recipient, uint256 amount)
+        // // This function resides on the targetMultichainPayroll contract, which will be called by the hookWrapper
         bytes memory targetCalldata = abi.encodeWithSelector(
             // Use the selector from the target contract instance/interface if available
             // Casting the address assumes MultichainPayrollWithHook type compatibility
@@ -195,9 +195,9 @@ contract MultichainPayrollWithHook is Ownable {
             amount
         );
 
-        // 2. Construct hookData by tightly packing the target contract address (targetMultichainPayroll) and its calldata
-        // The hookWrapper will use this data to make the final call
-        bytes memory hookData = abi.encodePacked(bytes20(targetMultichainPayroll), targetCalldata);
+        // // 2. Construct hookData by tightly packing the target contract address (targetMultichainPayroll) and its calldata
+        // // The hookWrapper will use this data to make the final call
+        // bytes memory hookData = abi.encodePacked(bytes20(targetMultichainPayroll), targetCalldata);
 
         // 3. Call CCTP's depositForBurnWithHook function with corrected parameters
         // Use values consistent with the working TypeScript example and best practices
@@ -205,15 +205,15 @@ contract MultichainPayrollWithHook is Ownable {
         uint32 cctpMinFinalityThreshold = 1000; // Set min finality threshold (consistent with TS example)
         bytes32 destinationCaller = _addressToBytes32(hookWrapper); // Restrict caller to the hookWrapper
 
-        tokenMessenger.depositForBurnWithHook(
+        tokenMessenger.depositForBurn(
            amount,                     // amount to burn
            domain,                     // destination CCTP domain
            _addressToBytes32(to),      // mintRecipient on destination (hookWrapper)
            USDC,                       // address of token being burned
            destinationCaller,          // authorized caller on the destination domain (hookWrapper)
            cctpMaxFee,                 // maximum fee to pay on the destination domain
-           cctpMinFinalityThreshold,   // minimum finality threshold
-           hookData                    // custom data passed to the hook contract
+           cctpMinFinalityThreshold   // minimum finality threshold
+          //  hookData                    // custom data passed to the hook contract
         );
     }
 
