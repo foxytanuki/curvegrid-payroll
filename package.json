@@ -6,7 +6,9 @@
     "lint": "biome check .",
     "format": "biome format --write .",
     "deploy:hook": "npx hardhat ignition deploy ignition/modules/CCTPHookWrapper.ts --parameters ignition/parameters.json",
-    "deploy:payroll": "npx hardhat ignition deploy ignition/modules/MultichainPayroll.ts --parameters ignition/parameters.json"
+    "deploy:hook-v2": "npx hardhat ignition deploy ignition/modules/CCTPHookWrapperV2.ts --parameters ignition/parameters.json",
+    "deploy:payroll": "npx hardhat ignition deploy ignition/modules/MultichainPayroll.ts --parameters ignition/parameters.json",
+    "deploy:payroll-hook": "npx hardhat ignition deploy ignition/modules/MultichainPayrollWithHook.ts --parameters ignition/parameters.json"
   },
   "keywords": [
     "ETHGlobalTaipei"

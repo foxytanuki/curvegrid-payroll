@@ -1,11 +1,17 @@
 {
   "$global": {
+    "tokenMessengerAddress": "0x8fe6b999dc680ccfdd5bf7eb0974218be2542daa",
+    "messageTransmitterAddress": "0xe737e5cebeeba77efe34d4aa090756590b1ce275",
+    "usdcAddress": "0x036CbD53842c5426634e7929541eC2318f3dCF7e"
   },
   "CCTPHookWrapperModule": {
-    "messageTransmitterAddress": "0xe737e5cebeeba77efe34d4aa090756590b1ce275"
+  },
+  "CCTPHookWrapperV2Module": {
   },
   "MultichainPayrollModule": {
-    "tokenMessengerAddress": "0x8fe6b999dc680ccfdd5bf7eb0974218be2542daa",
-    "usdcAddress": "0x036CbD53842c5426634e7929541eC2318f3dCF7e"
+  },
+  "MultichainPayrollWithHookModule": {
+    "hookWrapperAddress": "0x8fe6b999dc680ccfdd5bf7eb0974218be2542daa",
+    "targetMultichainPayrollAddress": "0x8fe6b999dc680ccfdd5bf7eb0974218be2542daa"
   }
 }
