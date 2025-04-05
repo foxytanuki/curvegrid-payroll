@@ -95,6 +95,7 @@ async function main() {
     const deployedAddressesPath = path.join(
       __dirname, // Assumes script is run from workspace root via 'npx hardhat run'
       "..", // Go up one level from 'scripts'
+      "..",
       "ignition",
       "deployments",
       `chain-${chainId}`, // Use the current network's chainId
