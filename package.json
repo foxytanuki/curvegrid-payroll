@@ -8,6 +8,7 @@
     "deploy:hook": "npx hardhat ignition deploy ignition/modules/CCTPHookWrapper.ts --parameters ignition/parameters.json --verify",
     "deploy:hook-v2": "npx hardhat ignition deploy ignition/modules/CCTPHookWrapperV2.ts --parameters ignition/parameters.json --verify",
     "deploy:payroll": "npx hardhat ignition deploy ignition/modules/MultichainPayroll.ts --parameters ignition/parameters.json --verify",
+    "deploy:payroll-multisig": "npx hardhat ignition deploy ignition/modules/MultichainPayrollMultisig.ts --parameters ignition/parameters.json --verify --network sepolia",
     "deploy:payroll-hook-source": "npx hardhat ignition deploy ignition/modules/MultichainPayrollWithHookSource.ts --parameters ignition/parameters.json --network sepolia --verify",
     "deploy:payroll-hook-destination": "npx hardhat ignition deploy ignition/modules/MultichainPayrollWithHookDestination.ts --parameters ignition/parameters.json --network baseSepolia --verify"
   },

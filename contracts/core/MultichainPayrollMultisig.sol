@@ -161,14 +161,22 @@ contract MultichainPayrollMultisig is Ownable {
         require(!isApprovalPending, ERROR_APPROVAL_ALREADY_PENDING);
         require(employees.length > 0, ERROR_EMPTY_EMPLOYEE_LIST);
 
+        // Validate all employees and their routes before storing
         for (uint256 i = 0; i < employees.length; i++) {
             _validateEmployee(employees[i]);
             require(isRouteConfigured(employees[i].employee), ERROR_ROUTE_NOT_CONFIGURED);
         }
 
-        pendingPayment = employees;
+        // Clear the previous pending payment array before populating
+        delete pendingPayment;
+
+        // Copy employee data from calldata to storage individually
+        for (uint256 i = 0; i < employees.length; i++) {
+            pendingPayment.push(employees[i]);
+        }
+
         isApprovalPending = true;
-        currentBatchId = block.timestamp;
+        currentBatchId = block.timestamp; // Use timestamp as a simple batch ID
 
         emit ApprovalRequested(currentBatchId);
     }
