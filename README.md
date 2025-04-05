@@ -21,14 +21,14 @@
 #### 3. A brief intro to your team and their social handles
 
 ##### Natsuki Yamaguchi
-X(Twitter): [0x_natto](0x_natto
-)
+X(Twitter): [0x_natto](0x_natto)
 
 ##### Takuma Abe
 X(Twitter): [takupesoo](https://x.com/takupesoo)
 
 ##### Yuta Tsurusaki
 X(Twitter): [foxytanuki](https://x.com/foxytanuki)
+
 Core Developer at [Mycel](https://www.mycel.land/). Full-stack blockchain developer passionate about intents and cross-chain solutions.
 
 #### 4. Clear setup and testing instructions
