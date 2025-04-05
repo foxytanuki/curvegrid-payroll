@@ -64,18 +64,18 @@ pnpm deploy:payroll-multisig --reset
   - Helpful input comments within the "Functions" tab of "On-chain Contracts" facilitated accurate parameter entry.
   - The flexibility to connect both Cloud Wallets and Web Wallets is a significant advantage.
   - The inclusion of Chainlist links when a connected Web Wallet doesn't support the deployment's chain was very helpful.
-  - Successfully implemented an automated event update mechanism using Google Apps Script (GAS) when synchronous updates weren't available via spreadsheet integration or `mbquery`.
+  - Successfully implemented an automated event update mechanism using Google Apps Script (GAS) when synchronous updates weren't available via spreadsheet integration or `MBQUERY`.
 - **Challenges:**
   - CloudWallet setup on Azure Key Vault was somewhat complex initially.
   - Integrating with Safe{Wallet} proved challenging due to dependencies within the Safe{Wallet} ecosystem (e.g., SDKs), hindering straightforward integration.
   - Occasionally encountered an issue where contracts deployed using `hardhat-multibaas-plugin` were linked to an incorrect address within the MultiBaas UI, despite successful on-chain deployment.
-  - Native spreadsheet integration and `mbquery` did not support synchronous/real-time event updates, requiring a custom GAS solution as a workaround.
+  - Native spreadsheet integration and `MBQUERY` did not support synchronous/real-time event updates, requiring a custom GAS solution as a workaround.
 - **Feedback:**
   - Simplified instructions or scripts for CloudWallet setup would be beneficial.
   - Proxy & Upgradable Contracts documentation could benefit from more detailed examples.
   - Provide clearer guidance or dedicated libraries/examples to simplify Safe{Wallet} integration, considering external dependencies.
   - Investigate and resolve the intermittent contract address mismatch issue in the MultiBaas UI after deployment with `hardhat-multibaas-plugin`.
-  - Providing built-in options for real-time or easier automated event fetching (beyond manual `mbquery` or custom scripting) would enhance the developer experience for applications requiring timely event data.
+  - Providing built-in options for real-time or easier automated event fetching (beyond manual `MBQUERY` or custom scripting) would enhance the developer experience for applications requiring timely event data.
 
 ---
 
