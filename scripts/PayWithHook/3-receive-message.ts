@@ -79,7 +79,7 @@ async function main() {
   console.log(`Using signer account: ${deployer.address}`);
 
   // --- 3. Configuration ---
-  const hookDeploymentId = "CCTPHookWrapperV2Module#CCTPHookWrapperV2";
+  const hookDeploymentId = "CCTPHookWrapperModule#CCTPHookWrapper";
 
   // --- 4. Get Deployed Contract (Reading deployed_addresses.json) ---
   console.log(
@@ -175,7 +175,7 @@ async function main() {
       `  Message relayed successfully. Gas used: ${receipt?.gasUsed.toString()}`
     );
     console.log(
-      `  View transaction on explorer: https://sepolia.basescan.io/tx/${tx.hash}`
+      `  View transaction on explorer: https://sepolia.basescan.org/tx/${tx.hash}`
     ); // Adjust URL if needed
     // You might want to add checks here to verify the state change on the destination contract (e.g., token balance)
   } catch (error: unknown) {
