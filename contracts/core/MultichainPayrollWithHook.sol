@@ -17,7 +17,9 @@ contract MultichainPayrollWithHook is Ownable {
     string private constant ERROR_ROUTE_NOT_CONFIGURED = "MultichainPayrollWithHook: Employee route not configured";
     string private constant ERROR_INVALID_USDC = "MultichainPayrollWithHook: Invalid USDC address";
     string private constant ERROR_INVALID_TOKEN_MESSENGER = "MultichainPayrollWithHook: Invalid TokenMessenger address";
-    
+    string private constant ERROR_INVALID_HOOK_WRAPPER = "MultichainPayrollWithHook: Invalid HookWrapper address";
+    string private constant ERROR_INVALID_MULTICHAIN_PAYROLL = "MultichainPayrollWithHook: Invalid MultichainPayroll address";
+
     // ================================
     // ============ Events ============
     // ================================
@@ -90,16 +92,23 @@ contract MultichainPayrollWithHook is Ownable {
     mapping(address => RouteInfo) public routes;
     address public immutable USDC;
     ITokenMessengerV2 public immutable tokenMessenger;
+    address public immutable hookWrapper;
+    address public immutable targetMultichainPayroll;
 
     // ================================
     // ============ Constructor =======
     // ================================
 
-    constructor(address _usdc, address _tokenMessenger) {
+    constructor(address _usdc, address _tokenMessenger, address _hookWrapper, address _targetMultichainPayroll) {
         require(_usdc != address(0), ERROR_INVALID_USDC);
         require(_tokenMessenger != address(0), ERROR_INVALID_TOKEN_MESSENGER);
+        require(_hookWrapper != address(0), ERROR_INVALID_HOOK_WRAPPER);
+        require(_targetMultichainPayroll != address(0), ERROR_INVALID_MULTICHAIN_PAYROLL);
+
         USDC = _usdc;
         tokenMessenger = ITokenMessengerV2(_tokenMessenger);
+        hookWrapper = _hookWrapper;
+        targetMultichainPayroll = _targetMultichainPayroll;
     }
 
     // =========================================
@@ -133,7 +142,7 @@ contract MultichainPayrollWithHook is Ownable {
             RouteInfo memory route = routes[emp.employee];
             require(isRouteConfigured(emp.employee), ERROR_ROUTE_NOT_CONFIGURED);
             
-            _sendCCTP(emp.employee, emp.amount, route.destinationCCTPDomain);
+            _sendCCTP(hookWrapper, emp.amount, route.destinationCCTPDomain, emp.employee);
             
             emit PaymentSent(emp.employee, emp.amount, route.destinationCCTPDomain);
         }
@@ -167,19 +176,44 @@ contract MultichainPayrollWithHook is Ownable {
     }
 
     /// @dev Calls CCTP depositForBurn using TokenMessenger
-    /// @param to Recipient address
+    /// @param to Recipient address (hookWrapper)
     /// @param amount Amount to send
     /// @param domain CCTP destination domain
-    function _sendCCTP(address to, uint256 amount, uint32 domain) internal {
+    /// @param finalRecipient The recipient address after the hook is executed
+    function _sendCCTP(address to, uint256 amount, uint32 domain, address finalRecipient) internal {
+        // Ensure the recipient ('to') for CCTP message is the hookWrapper contract
+        require(to == hookWrapper, "CCTP recipient must be the hook wrapper");
+
         IERC20(USDC).approve(address(tokenMessenger), amount);
-        tokenMessenger.depositForBurn(
-           amount,
-           domain,
-           _addressToBytes32(to),
-           USDC,
-           bytes32(0),
-           0,
-           1000
+
+        // 1. Prepare calldata for handleReceiveMessage(address recipient, uint256 amount)
+        // This function resides on the targetMultichainPayroll contract, which will be called by the hookWrapper
+        bytes memory targetCalldata = abi.encodeWithSelector(
+            // Use the selector from the target contract instance/interface if available
+            // Casting the address assumes MultichainPayrollWithHook type compatibility
+            MultichainPayrollWithHook(targetMultichainPayroll).handleReceiveMessage.selector,
+            finalRecipient,
+            amount
+        );
+
+        // 2. Construct hookData by tightly packing the target contract address (targetMultichainPayroll) and its calldata
+        // The hookWrapper will use this data to make the final call
+        bytes memory hookData = abi.encodePacked(bytes20(targetMultichainPayroll), targetCalldata);
+
+        // 3. Call CCTP's depositForBurnWithHook function
+        // Pass the hookWrapper address as the mintRecipient (_addressToBytes32(to))
+        // Pass the constructed hookData
+        // Note: Ensure the ITokenMessengerV2 interface definition matches these parameters
+        // Note: burnerMintRecipient, nonce, and maxFee values might need adjustment based on requirements
+        tokenMessenger.depositForBurnWithHook(
+           amount,                // amount to burn
+           domain,                // destination CCTP domain
+           _addressToBytes32(to), // mintRecipient on destination (hookWrapper)
+           USDC,                  // address of token being burned
+           bytes32(0),            // burnerMintRecipient (optional recipient on destination if different from mintRecipient, often 0)
+           uint64(0),             // nonce (unique identifier for the message, manage appropriately if needed)
+           uint32(1000),          // maxFee (maximum fee willing to pay for relaying, adjust as needed) - Placeholder
+           hookData               // custom data passed to the hook contract
         );
     }
 
