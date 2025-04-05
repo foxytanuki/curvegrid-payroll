@@ -28,6 +28,8 @@ Komlock Lab CTO & Technical Lead at CryptoGames, specializing in Blockchain Deve
 ##### Takuma Abe
 X(Twitter): [takupesoo](https://x.com/takupesoo)
 
+Komlock Lab VPoE and backend and blockchain developer.
+
 ##### Yuta Tsurusaki
 X(Twitter): [foxytanuki](https://x.com/foxytanuki)
 
