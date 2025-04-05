@@ -197,7 +197,7 @@ contract MultichainPayrollWithHook is Ownable {
         bytes memory targetCalldata = abi.encodeWithSelector(
             // Use the selector from the target contract instance/interface if available
             // Casting the address assumes MultichainPayrollWithHook type compatibility
-            MultichainPayrollWithHook(targetMultichainPayroll).handleReceiveMessage.selector,
+            MultichainPayrollWithHook(targetMultichainPayroll).directTransfer.selector,
             to,
             amount
         );
