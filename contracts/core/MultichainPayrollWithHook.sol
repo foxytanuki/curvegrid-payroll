@@ -145,7 +145,7 @@ contract MultichainPayrollWithHook is Ownable {
             
             // Send USDC to hookWrapper on destination chain at first,
             // then the hookWrapper will call handleReceiveMessage on the targetMultichainPayroll
-            _sendCCTP(hookWrapper, emp.amount, route.destinationCCTPDomain, emp.employee);
+            _sendCCTP(emp.employee, emp.amount, route.destinationCCTPDomain);
             
             emit PaymentSent(emp.employee, emp.amount, route.destinationCCTPDomain);
         }
@@ -182,11 +182,7 @@ contract MultichainPayrollWithHook is Ownable {
     /// @param to Recipient address (hookWrapper)
     /// @param amount Amount to send
     /// @param domain CCTP destination domain
-    /// @param finalRecipient The recipient address after the hook is executed
-    function _sendCCTP(address to, uint256 amount, uint32 domain, address finalRecipient) internal {
-        // Ensure the recipient ('to') for CCTP message is the hookWrapper contract
-        require(to == hookWrapper, "CCTP recipient must be the hook wrapper");
-
+    function _sendCCTP(address to, uint256 amount, uint32 domain) internal {
         IERC20(USDC).approve(address(tokenMessenger), amount);
 
         // 1. Prepare calldata for handleReceiveMessage(address recipient, uint256 amount)
@@ -195,7 +191,7 @@ contract MultichainPayrollWithHook is Ownable {
             // Use the selector from the target contract instance/interface if available
             // Casting the address assumes MultichainPayrollWithHook type compatibility
             MultichainPayrollWithHook(targetMultichainPayroll).handleReceiveMessage.selector,
-            finalRecipient,
+            to,
             amount
         );
 
@@ -203,20 +199,21 @@ contract MultichainPayrollWithHook is Ownable {
         // The hookWrapper will use this data to make the final call
         bytes memory hookData = abi.encodePacked(bytes20(targetMultichainPayroll), targetCalldata);
 
-        // 3. Call CCTP's depositForBurnWithHook function
-        // Pass the hookWrapper address as the mintRecipient (_addressToBytes32(to))
-        // Pass the constructed hookData
-        // Note: Ensure the ITokenMessengerV2 interface definition matches these parameters
-        // Note: burnerMintRecipient, nonce, and maxFee values might need adjustment based on requirements
+        // 3. Call CCTP's depositForBurnWithHook function with corrected parameters
+        // Use values consistent with the working TypeScript example and best practices
+        uint256 cctpMaxFee = 500; // Set max fee (0.0005 USDC)
+        uint32 cctpMinFinalityThreshold = 1000; // Set min finality threshold (consistent with TS example)
+        bytes32 destinationCaller = _addressToBytes32(hookWrapper); // Restrict caller to the hookWrapper
+
         tokenMessenger.depositForBurnWithHook(
-           amount,                // amount to burn
-           domain,                // destination CCTP domain
-           _addressToBytes32(to), // mintRecipient on destination (hookWrapper)
-           USDC,                  // address of token being burned
-           bytes32(0),            // burnerMintRecipient (optional recipient on destination if different from mintRecipient, often 0)
-           uint64(0),             // nonce (unique identifier for the message, manage appropriately if needed)
-           uint32(1000),          // maxFee (maximum fee willing to pay for relaying, adjust as needed) - Placeholder
-           hookData               // custom data passed to the hook contract
+           amount,                     // amount to burn
+           domain,                     // destination CCTP domain
+           _addressToBytes32(to),      // mintRecipient on destination (hookWrapper)
+           USDC,                       // address of token being burned
+           destinationCaller,          // authorized caller on the destination domain (hookWrapper)
+           cctpMaxFee,                 // maximum fee to pay on the destination domain
+           cctpMinFinalityThreshold,   // minimum finality threshold
+           hookData                    // custom data passed to the hook contract
         );
     }
 
