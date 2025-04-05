@@ -210,6 +210,57 @@ async function main() {
       if (revertData) {
         // If we found valid revert data, include it
         failMessage += ` Revert data: ${revertData}`;
+        // Attempt to decode the revert data
+        try {
+          // Remove the first 4 bytes (function selector for Error(string)) and the 0x prefix
+          // ABI encoded data: selector (4 bytes) + offset (32 bytes) + length (32 bytes) + data (variable)
+          // We need to skip the selector (4 bytes) and offset (32 bytes), then read the length, then the data.
+          // However, a simple toUtf8String on the data part often works for basic Error(string)
+          const dataBytes = ethers.getBytes(revertData);
+          if (dataBytes.length > 4) {
+            // Need at least the selector
+            // Try decoding as Error(string) which is common
+            // selector: 0x08c379a0
+            // data starts after selector (4 bytes)
+            const reasonBytes = dataBytes.subarray(4);
+            // Use defaultAbiCoder for robust decoding if possible
+            try {
+              const decodedReason = ethers.AbiCoder.defaultAbiCoder().decode(
+                ["string"],
+                reasonBytes
+              );
+              const cleanReason = decodedReason[0].replace(/\0/g, "").trim(); // Clean up null bytes and trim
+              failMessage += `\n  Decoded Reason: ${cleanReason}`;
+            } catch (abiDecodeError) {
+              // Fallback to simple UTF8 decoding if defaultAbiCoder fails
+              // This might work if the string is simple and directly encoded after selector
+              try {
+                // Simple UTF8 attempt (might be incorrect for complex types or offsets)
+                // Let's look for the string data part more directly if it's standard abi encoding
+                // Offset is at bytes 4-36, length at 36-68
+                if (dataBytes.length >= 68) {
+                  const reasonString = ethers.toUtf8String(
+                    dataBytes.subarray(68)
+                  );
+                  const cleanReason = reasonString.replace(/\0/g, "").trim();
+                  failMessage += `\n  Decoded Reason (UTF8 fallback): ${cleanReason}`;
+                } else {
+                  failMessage +=
+                    "\n  (Could not decode revert reason: data too short for standard ABI string)";
+                }
+              } catch (utf8Error) {
+                failMessage +=
+                  "\n  (Could not decode revert reason: ABI or UTF8 decoding failed)";
+              }
+            }
+          } else {
+            failMessage +=
+              "\n  (Could not decode revert reason: data too short)";
+          }
+        } catch (decodeError) {
+          // If any other error happens during processing bytes
+          failMessage += "\n  (Error processing revert data for decoding)";
+        }
       } else {
         // Otherwise, just include the standard error message
         failMessage += ` Error: ${error.message}`;
