@@ -66,6 +66,13 @@ contract MultichainPayrollWithHook is Ownable {
         address token,
         uint256 amount
     );
+
+    event PaymentRequestedFromHook(
+        address indexed employee,
+        address token,
+        uint256 amount,
+        uint32 destinationDomain
+    );
     
     // ================================
     // ============ Structs ===========
@@ -185,8 +192,8 @@ contract MultichainPayrollWithHook is Ownable {
     function _sendCCTP(address to, uint256 amount, uint32 domain) internal {
         IERC20(USDC).approve(address(tokenMessenger), amount);
 
-        // // 1. Prepare calldata for handleReceiveMessage(address recipient, uint256 amount)
-        // // This function resides on the targetMultichainPayroll contract, which will be called by the hookWrapper
+        // 1. Prepare calldata for handleReceiveMessage(address recipient, uint256 amount)
+        // This function resides on the targetMultichainPayroll contract, which will be called by the hookWrapper
         bytes memory targetCalldata = abi.encodeWithSelector(
             // Use the selector from the target contract instance/interface if available
             // Casting the address assumes MultichainPayrollWithHook type compatibility
@@ -195,22 +202,22 @@ contract MultichainPayrollWithHook is Ownable {
             amount
         );
 
-        // // 2. Construct hookData by tightly packing the target contract address (targetMultichainPayroll) and its calldata
-        // // The hookWrapper will use this data to make the final call
+        // 2. Construct hookData by tightly packing the target contract address (targetMultichainPayroll) and its calldata
+        // The hookWrapper will use this data to make the final call
         bytes memory hookData = abi.encodePacked(bytes20(targetMultichainPayroll), targetCalldata);
 
         // 3. Call CCTP's depositForBurnWithHook function with corrected parameters
-        // Use values consistent with the working TypeScript example and best practices
+        bytes32 mintRecipient = _addressToBytes32(targetMultichainPayroll);
+        bytes32 destinationCaller = bytes32(0); // Any address can broadcast the message
         uint256 cctpMaxFee = 500; // Set max fee (0.0005 USDC)
         uint32 cctpMinFinalityThreshold = 1000; // Set min finality threshold (consistent with TS example)
-        bytes32 destinationCaller = bytes32(0); // Any address can broadcast the message
 
         tokenMessenger.depositForBurnWithHook(
-           amount,                     // amount to burn
-           domain,                     // destination CCTP domain
-           _addressToBytes32(to),      // mintRecipient on destination (hookWrapper)
+           amount,                    // amount to burn
+           domain,                    // destination CCTP domain
+           mintRecipient,              // mintRecipient on destination
            USDC,                       // address of token being burned
-           destinationCaller,          // authorized caller on the destination domain (hookWrapper)
+           destinationCaller,          // authorized caller on the destination domain
            cctpMaxFee,                 // maximum fee to pay on the destination domain
            cctpMinFinalityThreshold,   // minimum finality threshold
            hookData                    // custom data passed to the hook contract
@@ -237,6 +244,8 @@ contract MultichainPayrollWithHook is Ownable {
         RouteInfo memory route = routes[recipient];
         address finalToken = route.desiredERC20Token;
         PaymentType paymentType = PaymentType.DIRECT;
+
+        emit PaymentRequestedFromHook(recipient, USDC, amount, route.destinationCCTPDomain);
         
         // Determine if token swap is needed
         bool isSwapNeeded = finalToken != address(0) && finalToken != USDC;
