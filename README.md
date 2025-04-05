@@ -1,6 +1,63 @@
 # Curvegrid Payroll
 
-This application proceeds with Sepolia as the source chain and Base Sepolia as the destination chain.
+### Summaries for "Best Overall Use of MultiBaas" Prize.
+
+#### 1. A one-sentence summary of your project
+Curvegrid Payroll is a cross-chain payroll application facilitating USDC payments, leveraging Circle's Cross-Chain Transfer Protocol (CCTP) V2.
+
+#### 2. How you used MultiBaas in your project
+
+- MultiBaas REST API (directly or via SDK)
+  - Seamlessly integrated MultiBaas REST API calls directly within Google Apps Script to manage smart contract interactions.
+- Cloud Wallets
+  - Secured contract ownership and management using a MultiBaas Cloud Wallet hosted on Azure Key Vault.
+- Transaction Manager (TXM)
+  - Leveraged TXM during the development phase for real-time, efficient monitoring of transaction statuses.
+- Safe{Wallet}
+  - Explored Safe{Wallet} integration for potential multisig security enhancements, confirming its value for future iterations.
+- Event Queries
+  - Utilized MultiBaas Event Queries via REST API from Google Apps Script to effectively track on-chain contract events.
+
+#### 3. A brief intro to your team and their social handles
+
+##### Natsuki Yamaguchi
+X(Twitter): 0xnatto
+
+##### Takuma Abe
+X(Twitter): takupesoo
+
+##### Yuta Tsurusaki
+X(Twitter): foxytanuki
+Core Developer at Mycel. Full-stack blockchain developer passionate about intents and cross-chain solutions.
+
+#### 4. Clear setup and testing instructions
+
+```
+pnpm i
+```
+
+#### 5. Your experience with MultiBaas (feedback, challenges, wins)
+
+- **Wins:**
+  - CloudWallet provided secure and convenient key management.
+  - Responsive Support helped clarify best practices quickly.
+  - The Contract Linking feature was remarkably intuitive and fast, significantly aiding the development workflow.
+  - The ability to link already deployed contracts is a valuable feature.
+  - The state overview in the "On-chain Contracts" section was extremely convenient during development, eliminating the need for manual `read` function calls.
+  - Helpful input comments within the "Functions" tab of "On-chain Contracts" facilitated accurate parameter entry.
+  - The flexibility to connect both Cloud Wallets and Web Wallets is a significant advantage.
+  - The inclusion of Chainlist links when a connected Web Wallet doesn't support the deployment's chain was very helpful.
+- **Challenges:**
+  - CloudWallet setup on Azure Key Vault was somewhat complex initially.
+  - Integrating with Safe{Wallet} proved challenging due to dependencies within the Safe{Wallet} ecosystem (e.g., SDKs), hindering straightforward integration.
+  - Occasionally encountered an issue where contracts deployed using `hardhat-multibaas-plugin` were linked to an incorrect address within the MultiBaas UI, despite successful on-chain deployment.
+- **Feedback:**
+  - Simplified instructions or scripts for CloudWallet setup would be beneficial.
+  - Proxy & Upgradable Contracts documentation could benefit from more detailed examples.
+  - Provide clearer guidance or dedicated libraries/examples to simplify Safe{Wallet} integration, considering external dependencies.
+  - Investigate and resolve the intermittent contract address mismatch issue in the MultiBaas UI after deployment with `hardhat-multibaas-plugin`.
+
+---
 
 ## Commands
 
@@ -80,7 +137,7 @@ Attestation retrieved successfully!
 
 {
   attestation: '0xa28a1cbab7a4cc56235aea6066c21f0e3c2a66472a7ed00d7131afbbd671722f1ace7ceb158d013756d6b66b3b0cb4fc05125b61fe88b5a8cc29b299b26f806e1c13def4c37828096dac949b0a0b7b2775172662f6426095aa648aa86718975fd54e3fb2531d6ed1f44ea3691aebe3fe34a9830d3abccef34f9aca067eabd3c3f31b',
-  message: '0x000000010000000000000006a482c6b74d999a4a814bb9a82bfbc98505808adce9db435556c451b5107ed45c0000000000000000000000008fe6b999dc680ccfdd5bf7eb0974218be2542daa0000000000000000000000008fe6b999dc680ccfdd5bf7eb0974218be2542daa0000000000000000000000000000000000000000000000000000000000000000000003e8000007d0000000010000000000000000000000001c7d4b196cb0c7b01d743fbc6116a902379c723800000000000000000000000045d17a2c9092ec9f86fb27a8416c2777858fb59100000000000000000000000000000000000000000000000000000000000186a0000000000000000000000000a65552404dfc42380bd1327c9795126f9a8626c1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  message: '0x000000010000000000000006a482c6b74d999a4a814bb9a82bfbc98505808adce9db435556c451b5107ed45c0000000000000000000000008fe6b999dc680ccfdd5bf7eb0974218be2542daa0000000000000000000000008fe6b999dc680ccfdd5bf7eb0974218be2542daa0000000000000000000000000000000000000000000000000000000000000000000003e8000007d0000000010000000000000000000000001c7d4b196cb0c7b01d743fbc6116a902379c723800000000000000000000000045d17a2c9092ec9f86fb27a8416c2777858fb59100000000000000000000000000000000000000000000000000000000000186a0000000000000000000000000a65552404dfc42380bd1327c9795126f9a8626c100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
   eventNonce: '0xa482c6b74d999a4a814bb9a82bfbc98505808adce9db435556c451b5107ed45c',
   cctpVersion: 2,
   status: 'complete'
