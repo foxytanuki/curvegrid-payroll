@@ -10,8 +10,12 @@
   },
   "MultichainPayrollModule": {
   },
-  "MultichainPayrollWithHookModule": {
-    "hookWrapperAddress": "0x8fe6b999dc680ccfdd5bf7eb0974218be2542daa",
-    "targetMultichainPayrollAddress": "0x8fe6b999dc680ccfdd5bf7eb0974218be2542daa"
+  "MultichainPayrollWithHookSourceModule": {
+    "hookWrapperAddress": "0xd284F6bBb03F89992e0683B35D19Af8e73949A69",
+    "targetMultichainPayrollAddress": "0xe9F980aD9A56d4F0C88b8CbdedAe23B28cc1ed6B"
+  },
+  "MultichainPayrollWithHookDestinationModule": {
+    "hookWrapperAddress": "0x0000000000000000000000000000000000000001",
+    "targetMultichainPayrollAddress": "0x0000000000000000000000000000000000000001"
   }
 }

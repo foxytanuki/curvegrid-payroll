@@ -1,7 +1,7 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-const MultichainPayrollWithHookModule = buildModule(
-  "MultichainPayrollWithHookModule",
+const MultichainPayrollWithHookDestinationModule = buildModule(
+  "MultichainPayrollWithHookDestinationModule",
   (m) => {
     // Get constructor arguments from module parameters
     const usdc = m.getParameter<string>("usdcAddress");
@@ -23,4 +23,4 @@ const MultichainPayrollWithHookModule = buildModule(
   }
 );
 
-export default MultichainPayrollWithHookModule;
+export default MultichainPayrollWithHookDestinationModule;
