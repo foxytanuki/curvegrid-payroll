@@ -203,7 +203,7 @@ contract MultichainPayrollWithHook is Ownable {
         // Use values consistent with the working TypeScript example and best practices
         uint256 cctpMaxFee = 500; // Set max fee (0.0005 USDC)
         uint32 cctpMinFinalityThreshold = 1000; // Set min finality threshold (consistent with TS example)
-        bytes32 destinationCaller = _addressToBytes32(hookWrapper); // Restrict caller to the hookWrapper
+        bytes32 destinationCaller = bytes32(0); // Any address can broadcast the message
 
         tokenMessenger.depositForBurnWithHook(
            amount,                     // amount to burn
