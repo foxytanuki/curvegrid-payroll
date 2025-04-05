@@ -178,7 +178,7 @@ contract MultichainPayroll is Ownable {
            _addressToBytes32(to),
            USDC,
            bytes32(0),
-           0,
+           500,
            1000
         );
     }
