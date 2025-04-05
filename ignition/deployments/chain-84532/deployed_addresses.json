@@ -1,7 +1,3 @@
 {
-  "CCTPHookWrapperModule#CCTPHookWrapper": "0x36f6eb97FE0Ac332B651c46D08B201fE471C16e2",
-  "MultichainPayrollModule#MultichainPayroll": "0xbe68Ff874102f7b9724D32cC46243fE9189EeB6f",
-  "CCTPHookWrapperV2Module#CCTPHookWrapperV2": "0xd284F6bBb03F89992e0683B35D19Af8e73949A69",
-  "MultichainPayrollWithHookDestinationModule#MultichainPayrollWithHook": "0xe9F980aD9A56d4F0C88b8CbdedAe23B28cc1ed6B",
-  "MultichainPayrollWithHookSourceModule#MultichainPayrollWithHook": "0xE743f9C8FF3154Ece2a56B55444F78BcE10ccDF9"
+  "CCTPHookWrapperModule#CCTPHookWrapper": "0x06dB9107D889B380FDBc255021Af5fCEF8667AC4"
 }
