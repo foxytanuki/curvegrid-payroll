@@ -94,6 +94,7 @@ async function main() {
     const deployedAddressesPath = path.join(
       __dirname, // Assumes script is run from workspace root via 'npx hardhat run'
       "..", // Go up one level from 'scripts'
+      "..", // Go up one more level from 'scripts'
       "ignition",
       "deployments",
       `chain-${chainId}`, // Use the current network's chainId
@@ -174,7 +175,7 @@ async function main() {
       `  Message relayed successfully. Gas used: ${receipt?.gasUsed.toString()}`
     );
     console.log(
-      `  View transaction on explorer: https://${network.name}.etherscan.io/tx/${tx.hash}`
+      `  View transaction on explorer: https://sepolia.basescan.io/tx/${tx.hash}`
     ); // Adjust URL if needed
     // You might want to add checks here to verify the state change on the destination contract (e.g., token balance)
   } catch (error: unknown) {
