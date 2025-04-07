@@ -1,5 +1,12 @@
 # Curvegrid Payroll
 
+---
+
+**🏆 Our project won prizes from Curvegrid and Circle!**
+https://ethglobal.com/showcase/curvegrid-payroll-kzyix
+
+---
+
 ### Summaries for "Best Overall Use of MultiBaas" Prize.
 
 #### 1. A one-sentence summary of your project
